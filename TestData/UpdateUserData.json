@@ -2,7 +2,11 @@
   {
     "id": 1,
     "username": "KateWil",
-    "phone": "8776755433",
-    "userStatus": 1
+    "firstName": "Kate",
+    "lastName": "Wilson",
+    "email": "UpdatedKateWilson@gmail.com",
+    "password": "updatedpassword",
+    "phone": "9965789976",
+    "userStatus": 0
   }
 ]

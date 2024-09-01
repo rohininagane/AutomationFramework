@@ -76,9 +76,6 @@ class Test_APITest:
         logger = LogGen.loggen("UserPutAPICall")
         try:
             logger.info("************* Verify update user functionality using put api call **********")
-            # Read endpoint from config file
-            BASE_URL = ReadConfig.getAPIEndPoint('APIEndPoints', 'updateuser')
-
             # Load the request template
             request_template_path = os.path.join(os.path.dirname(__file__), '..', 'RequestTemplates', 'CreateUser.json')
             with open(request_template_path) as f:
@@ -86,13 +83,17 @@ class Test_APITest:
 
             # Merge the test data with the request template
             request_payload = {**request_template, **user_data}
-
             logger.info("************* Update User Put API request sent **********")
             username = request_payload.get('username')
             logger.info("************* Username: %s **********", username)
 
+            # Read endpoint from config file
+            BASE_URL = ReadConfig.getAPIEndPoint('APIEndPoints', 'updateuser')
+            BASE_URL = BASE_URL.rstrip('/')
+            url =f"{BASE_URL}/{username}"
+            logger.info("************* Baseurl: %s **********", url)
             # Send a Post request to the API endpoint
-            response = requests.put(BASE_URL, json=[request_payload])
+            response = requests.put(url, json=[request_payload])
             logger.info("************* Update User Put API response received **********")
 
             # Check the response status code
