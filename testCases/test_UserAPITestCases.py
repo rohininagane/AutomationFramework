@@ -92,7 +92,7 @@ class Test_APITest:
             logger.info("************* Username: %s **********", username)
 
             # Send a Post request to the API endpoint
-            response = requests.post(BASE_URL, json=[request_payload])
+            response = requests.put(BASE_URL, json=[request_payload])
             logger.info("************* Update User Put API response received **********")
 
             # Check the response status code
