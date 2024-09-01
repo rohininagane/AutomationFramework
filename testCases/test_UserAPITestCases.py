@@ -57,11 +57,13 @@ class Test_APITest:
             BASE_URL = ReadConfig.getAPIEndPoint('APIEndPoints', 'getuser')
             url = f"{BASE_URL}/{username}"
             logger.info("************* Get API call endpoint:%s **************", url)
-
+            logger.info("************* Sending request **************")
             response = requests.get(url)
-            logger.info("************* request sent **************")
-            logger.info("************* Status Code:%d **************", response.status_code)
             assert response.status_code == 200, f"Expected status code 200 but got {response.status_code}"
+            logger.info("************* Status Code:%d **************", response.status_code)
+            response_json = response.json()
+            assert response_json.get('username') == username, f"got unexpected username {response_json.get('username')}"
+            logger.info("************* Verified created user's username: %s **************", response_json.get('username'))
         except Exception as e:
             logger.error("Test Case Failed: %s", e)
             raise
@@ -85,6 +87,7 @@ class Test_APITest:
             request_payload = {**request_template, **user_data}
             logger.info("************* Update User Put API request sent **********")
             username = request_payload.get('username')
+            email = request_payload.get('email')
             logger.info("************* Username: %s **********", username)
 
             # Read endpoint from config file
@@ -112,8 +115,14 @@ class Test_APITest:
 
             response = requests.get(url)
             logger.info("************* request sent **************")
-            logger.info("************* Status Code:%d **************", response.status_code)
             assert response.status_code == 200, f"Expected status code 200 but got {response.status_code}"
+            logger.info("************* Status Code:%d **************", response.status_code)
+            response_json = response.json()
+            assert response_json.get('username') == username, f"got unexpected username {response_json.get('username')}"
+            logger.info("************* Verified updated user's username: %s **************",response_json.get('username'))
+            assert response_json.get('email') == email, f"got unexpected username {response_json.get('email')}"
+            logger.info("************* Verified updated user's username: %s **************",response_json.get('email'))
+
         except Exception as e:
             logger.error("Test Case Failed: %s", e)
             raise
@@ -125,16 +134,16 @@ class Test_APITest:
         try:
             logger = LogGen.loggen("UserGetAPICall")
             logger.info("************* Verify Get User API call **************")
-
             BASE_URL=ReadConfig.getAPIEndPoint('APIEndPoints','getuser')
             url = f"{BASE_URL}/{user_name}"
             logger.info("************* Get API call endpoint:%s **************",url)
-
+            logger.info("************* Sending Get call for username:%d **************", user_name)
             response = requests.get(url)
-            logger.info("************* request sent **************")
-            logger.info("************* Status Code:%d **************",response.status_code)
-            logger.info(type(response))
+            response_json = response.json()
             assert response.status_code == 200, f"Expected status code 200 but got {response.status_code}"
+            logger.info("************* Status Code:%d **************", response.status_code)
+            assert response_json.get('username') == user_name, f"got unexpected username {response_json.get('username')}"
+            logger.info("************* Received data successfully for expected username: %s **************",response_json.get('username'))
         except Exception as e:
             logger.error("Test Case Failed : %s", e)
             raise
