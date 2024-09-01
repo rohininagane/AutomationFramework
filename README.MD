@@ -62,4 +62,4 @@ python -m pytest -v -m ui --html=Reports/report.html testCases/
 
 Once execution is completed check html report in report folder
 
-# AutomationFramework
+
